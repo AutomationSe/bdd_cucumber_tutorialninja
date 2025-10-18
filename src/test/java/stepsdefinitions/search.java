@@ -1,45 +1,48 @@
 package stepsdefinitions;
 
+import driverfactory.factorymain;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import org.junit.Assert;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+
+import java.sql.Driver;
 
 public class search {
 
+    WebDriver driver;
 
-    @Given("the User opens the Application")
-    public void the_user_opens_the_application() {
-
+    @Given("User opens the Application")
+    public void user_opens_the_application() {
+        driver = factorymain.getDriver();
     }
-    @When("the User enters valid product {string} into the Search box field")
-    public void the_user_enters_valid_product_into_the_search_box_field(String vaidproductText) {
-
+    @When("User enters valid product {string} into Search box field")
+    public void user_enters_valid_product_into_search_box_field(String validProductText) {
+        driver.findElement(By.name("search")).sendKeys(validProductText);
     }
-    @When("the User clicks on the Search button")
-    public void the_user_clicks_on_the_search_button() {
-
+    @When("User clicks on Search button")
+    public void user_clicks_on_search_button() {
+        driver.findElement(By.xpath("(//button[@class='btn btn-default btn-lg'])[1]")).click();
     }
-    @Then("the User should get valid product displayed in search results")
-    public void the_user_should_get_valid_product_displayed_in_search_results() {
-
+    @Then("User should get valid product displayed in search results")
+    public void user_should_get_valid_product_displayed_in_search_results() {
+        Assert.assertTrue(driver.findElement(By.linkText("HP LP3065")).isDisplayed());
     }
 
     @When("User enters invalid product {string} into Search box field")
-    public void user_enters_invalid_product_into_search_box_field(String string) {
-        // Write code here that turns the phrase above into concrete actions
-        throw new io.cucumber.java.PendingException();
+    public void user_enters_invalid_product_into_search_box_field(String invalidprductname) {
+        driver.findElement(By.name("search")).sendKeys("invalidprductname");
     }
 
     @Then("User should get a message about no product matching")
     public void user_should_get_a_message_about_no_product_matching() {
-        // Write code here that turns the phrase above into concrete actions
-        throw new io.cucumber.java.PendingException();
+        Assert.assertEquals("There is no product that matches the search criteria.", driver.findElement(By.xpath("(//p[contains(text(),'There is no product that matches the search criter')])[1]")));
     }
 
     @When("User dont enter any product name into Search box field")
     public void user_dont_enter_any_product_name_into_search_box_field() {
-        // Write code here that turns the phrase above into concrete actions
-        throw new io.cucumber.java.PendingException();
-    }
 
+    }
 }
